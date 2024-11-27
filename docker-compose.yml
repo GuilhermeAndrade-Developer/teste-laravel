@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: teste-laravel-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: teste-laravel-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: teste_laravel
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: usuario_laravel
+      MYSQL_PASSWORD: teste_laravel
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
